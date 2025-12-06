@@ -20,12 +20,7 @@ function Footer() {
             >
               Privacy Policy
             </Link>
-            <Link 
-              to="/admin/login" 
-              className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
-            >
-              Admin
-            </Link>
+            {/* Removed direct admin link to prevent visitors from accessing admin page */}
           </div>
         </div>
         

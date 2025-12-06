@@ -94,3 +94,36 @@
 .story-content img {
   @apply rounded-lg my-6;
 }
+
+/* --- Mobile responsiveness improvements --- */
+@media (max-width: 768px) {
+  /* Improve touch targets on mobile */
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Adjust header for mobile */
+  header .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Adjust main content padding for mobile */
+  main.container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  /* Adjust form inputs for better mobile experience */
+  .input-field {
+    font-size: 16px; /* Prevent zoom on iOS Safari */
+  }
+  
+  /* Adjust story cards for mobile */
+  .story-card {
+    margin-bottom: 1rem;
+  }
+}
