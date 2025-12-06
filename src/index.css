@@ -1,0 +1,96 @@
+@import 'react-quill/dist/quill.snow.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --- Base layer --- */
+@layer base {
+  body {
+    @apply font-sans antialiased;
+  }
+}
+
+/* --- Components layer (use only Tailwind default colors to avoid missing custom colors) --- */
+@layer components {
+  .btn-primary {
+    /* using default Tailwind blue colors so Tailwind can find them without custom config */
+    @apply bg-blue-600 text-white px-6 py-2.5 rounded-lg font-medium
+           hover:bg-blue-700 transition-all duration-200
+           hover:shadow-lg hover:-translate-y-0.5;
+  }
+
+  .btn-secondary {
+    /* using gray/sky for secondary to keep it simple */
+    @apply bg-gray-200 text-gray-800 px-6 py-2.5 rounded-lg font-medium
+           hover:bg-gray-300 transition-all duration-200;
+  }
+
+  .card {
+    /* use default neutral/gray palette for borders & dark mode */
+    @apply bg-white dark:bg-gray-800 rounded-xl shadow-md
+           hover:shadow-xl transition-all duration-300
+           border border-gray-200 dark:border-gray-600;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600
+           rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
+           dark:bg-gray-700 dark:text-white transition-all duration-200;
+  }
+}
+
+/* --- Reading progress bar --- */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(to right, #14b8a6, #f97316);
+  transform-origin: 0%;
+  z-index: 100;
+}
+
+/* --- Animations --- */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- React Quill editor --- */
+.ql-editor {
+  min-height: 300px;
+  font-size: 16px;
+}
+
+/* --- Story content --- */
+.story-content {
+  @apply max-w-none;
+}
+
+.story-content h1 {
+  @apply text-3xl font-bold mb-4;
+}
+
+.story-content h2 {
+  @apply text-2xl font-bold mb-3;
+}
+
+.story-content p {
+  @apply mb-4 leading-relaxed;
+}
+
+.story-content img {
+  @apply rounded-lg my-6;
+}
