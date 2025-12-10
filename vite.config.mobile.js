@@ -17,7 +17,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: './index.html',
-      // Optimize for mobile performance
+      // Optimize heavily for mobile performance
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
@@ -26,20 +26,24 @@ export default defineConfig({
         }
       }
     },
-    // Enable chunking for better caching
-    chunkSizeWarningLimit: 1000,
-    // Minify for smaller bundles
+    // Aggressive optimization for mobile
+    chunkSizeWarningLimit: 500,
+    // Heavy minification
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true, // Remove console logs for production
-        drop_debugger: true
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ['console.info', 'console.debug', 'console.warn']
+      },
+      mangle: true,
+      format: {
+        comments: false
       }
     }
   },
-  // Add base configuration for proper routing
+  // Mobile-specific optimizations
   base: './',
-  // Optimize for mobile networks
   esbuild: {
     drop: ['console', 'debugger']
   }

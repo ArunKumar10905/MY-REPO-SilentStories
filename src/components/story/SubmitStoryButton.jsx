@@ -62,7 +62,7 @@ function SubmitStoryButton({ visitorName }) {
           // Try fetch first
           let response;
           try {
-            response = await fetch('http://localhost:3004/api/submit-story', {
+            response = await fetch('/api/submit-story', {
               method: 'POST',
               headers: { 
                 'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ function SubmitStoryButton({ visitorName }) {
           } catch (fetchError) {
             // If fetch fails, try a more permissive approach for mobile
             console.log('Primary fetch failed, trying alternative approach for mobile');
-            response = await fetch('http://localhost:3004/api/submit-story', {
+            response = await fetch('/api/submit-story', {
               method: 'POST',
               headers: { 
                 'Content-Type': 'application/json'
@@ -127,7 +127,7 @@ function SubmitStoryButton({ visitorName }) {
             if (error.name === 'TypeError' && error.message.includes('fetch') && retries === 0) {
               try {
                 console.log('Trying final relaxed approach for mobile browser');
-                const relaxedResponse = await fetch('http://localhost:3004/api/submit-story', {
+                const relaxedResponse = await fetch('/api/submit-story', {
                   method: 'POST',
                   headers: { 
                     'Content-Type': 'application/json'

@@ -101,6 +101,8 @@
   button, a {
     min-height: 44px;
     min-width: 44px;
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
+    touch-action: manipulation; /* Improve touch response */
   }
   
   /* Adjust header for mobile */
@@ -125,6 +127,12 @@
   /* Adjust story cards for mobile */
   .story-card {
     margin-bottom: 1rem;
+    transition: transform 0.2s ease-out; /* Smooth hover effect */
+  }
+  
+  /* Add touch feedback for interactive elements */
+  .story-card:active {
+    transform: scale(0.98); /* Subtle press effect */
   }
   
   /* Adjust highlighted text for mobile */
@@ -154,6 +162,12 @@
     min-height: 44px;
     width: 100%;
     margin-bottom: 0.5rem;
+    /* Add touch feedback */
+    transition: all 0.2s ease;
+  }
+  
+  .btn-primary:active, .btn-secondary:active {
+    transform: scale(0.98);
   }
   
   /* Adjust form elements for better mobile experience */
@@ -165,11 +179,22 @@
     autocomplete: "off";
     autocapitalize: "sentences";
     spellcheck: "true";
+    /* Improve touch experience */
+    border-radius: 0.5rem;
+    transition: border-color 0.2s ease;
+  }
+  
+  /* Focus states for better accessibility */
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: #3b82f6; /* Blue focus ring */
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
   }
   
   /* Adjust React Quill editor for mobile */
   .ql-toolbar {
     overflow-x: auto;
+    padding: 0.5rem;
   }
   
   .ql-container {
@@ -212,6 +237,12 @@
     min-height: 44px;
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
+    /* Add touch feedback */
+    transition: all 0.2s ease;
+  }
+  
+  .header-admin-button:active {
+    transform: scale(0.95);
   }
   
   /* Admin dashboard mobile improvements */
@@ -241,6 +272,23 @@
     padding: 1rem 0;
     border-top: 1px solid #e5e7eb;
     z-index: 10;
+    /* Add subtle shadow for better visibility */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Scroll behavior improvements for mobile */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Prevent pull-to-refresh on mobile */
+  body {
+    overscroll-behavior-y: contain;
+  }
+  
+  /* Optimize animations for mobile performance */
+  * {
+    will-change: transform;
   }
   
   @media (max-width: 480px) {
@@ -260,6 +308,21 @@
     /* Further compress admin dashboard on small screens */
     .admin-dashboard-stats {
       grid-template-columns: 1fr 1fr !important;
+    }
+    
+    /* Reduce motion for users who prefer it */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      ::before,
+      ::after {
+        animation-delay: -1ms !important;
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        background-attachment: initial !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0s !important;
+        transition-delay: 0s !important;
+      }
     }
   }
 }

@@ -3,6 +3,7 @@ import cors from 'cors';
 import session from 'express-session';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
+import os from 'os';
 // Import Firebase functions
 import { getStories, createStory, updateStory, deleteStory, getComments, createComment, deleteComment, getSubmittedStories, createSubmittedStory, updateSubmittedStory, getUsers, getStoryById } from './firebase.js';
 
@@ -635,6 +636,27 @@ app.get('/api/realtime-events', (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+// Listen on all interfaces for mobile device access
+app.listen(PORT, '0.0.0.0', () => {
+  const localIP = getLocalIP();
+  console.log(`Server running on:`);
+  console.log(`  Local: http://localhost:${PORT}`);
+  console.log(`  Network: http://${localIP}:${PORT}`);
+  console.log(`\nTo access from mobile devices:`);
+  console.log(`  1. Connect your phone to the same WiFi network`);
+  console.log(`  2. Open browser and go to: http://${localIP}:${PORT}`);
 });
+
+// Helper function to get local IP address
+
+function getLocalIP() {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name]) {
+      if (iface.family === 'IPv4' && !iface.internal) {
+        return iface.address;
+      }
+    }
+  }
+  return 'localhost';
+}
