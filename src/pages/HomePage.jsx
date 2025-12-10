@@ -59,6 +59,9 @@ function HomePage({ visitorName }) {
         <p className="text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-6">
           Discover captivating tales published monthly
         </p>
+        <p className="text-lg font-bold text-blue-600 dark:text-blue-400 mb-6 bg-yellow-100 dark:bg-yellow-900/30 p-4 rounded-lg border border-yellow-300 dark:border-yellow-700">
+          Tell your story and send it to the one in your heart friend that solve dnot add extra
+        </p>
         <div className="max-w-3xl mx-auto p-8 bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-gray-800 dark:to-gray-800 rounded-2xl border-2 border-blue-300 dark:border-blue-700 shadow-xl">
           <p className="text-xl font-bold text-blue-800 dark:text-blue-200 italic leading-relaxed text-center">
             This page is designed for you to write and explore the stories that shape your life. You can select who you want to share them with, making every memory personal and meaningful. Let your feelings flow as you write.

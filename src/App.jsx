@@ -13,6 +13,7 @@ import UsersComments from './pages/UsersComments';
 import Settings from './pages/Settings';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import SubmittedStories from './pages/SubmittedStories';
+import { onAuthStateChange, logoutUser } from './firebase/firebase';
 
 function App() {
   const [visitorName, setVisitorName] = useState('');
@@ -27,13 +28,30 @@ function App() {
       setVisitorName(storedName);
     }
 
-    const adminToken = localStorage.getItem('adminToken');
-    if (adminToken) {
-      setIsAdmin(true);
-    }
+    // Set up Firebase auth state listener
+    try {
+      const unsubscribe = onAuthStateChange((user) => {
+        if (user) {
+          // User is signed in
+          localStorage.setItem('adminToken', user.accessToken);
+          setIsAdmin(true);
+        } else {
+          // User is signed out
+          localStorage.removeItem('adminToken');
+          setIsAdmin(false);
+        }
+        setLoading(false);
+      });
 
-    // Simpler auth check without Firebase listener
-    setLoading(false);
+      // Clean up the listener when the component unmounts
+      return () => unsubscribe();
+    } catch (error) {
+      console.error('Firebase auth initialization error:', error);
+      // Fallback: check if there's a stored token
+      const adminToken = localStorage.getItem('adminToken');
+      setIsAdmin(!!adminToken);
+      setLoading(false);
+    }
 
     const theme = localStorage.getItem('theme');
     if (theme === 'dark') {
@@ -64,8 +82,15 @@ function App() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('adminToken');
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Even if Firebase logout fails, clear local storage
+      localStorage.removeItem('adminToken');
+    }
+    // Regardless of Firebase logout success, update UI state
     setIsAdmin(false);
   };
 

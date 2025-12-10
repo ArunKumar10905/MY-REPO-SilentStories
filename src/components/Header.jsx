@@ -33,15 +33,18 @@ function Header({ visitorName, onNameChange, darkMode, toggleDarkMode, isAdmin, 
           </Link>
 
           <div className="flex items-center space-x-4">
-            {/* Admin controls */}
+            {/* Admin Dashboard button - visible to everyone */}
+            <Link 
+              to="/admin/dashboard" 
+              className="flex items-center space-x-1 px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
+            >
+              <LayoutDashboard className="w-5 h-5" />
+              <span>Admin Dashboard</span>
+            </Link>
+            
+            {/* Additional admin controls - only visible when logged in */}
             {isAdmin && (
               <div className="flex items-center space-x-2">
-                <Link 
-                  to="/admin/dashboard" 
-                  className="p-2 text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                >
-                  <LayoutDashboard className="w-5 h-5" />
-                </Link>
                 <Link 
                   to="/admin/settings" 
                   className="p-2 text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
