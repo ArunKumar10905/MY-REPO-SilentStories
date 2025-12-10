@@ -51,63 +51,91 @@ function SubmitStoryButton({ visitorName }) {
     try {
       // Add timeout for mobile browsers
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout for mobile
       
-      const response = await fetch('http://localhost:3004/api/submit-story', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          // Add mobile-specific headers
-          'Accept': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest'
-        },
-        body: JSON.stringify(formData),
-        signal: controller.signal
-      });
+      // Retry logic for mobile network resilience
+      let retries = 3;
+      let lastError;
       
-      clearTimeout(timeoutId);
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setMessage({ 
-          type: 'success', 
-          text: 'Your story has been submitted to the admin for review!' 
-        });
-        setFormData({
-          title: '',
-          author: visitorName || '',
-          email: '', // Reset email field
-          dedication: '',
-          content: '',
-          category: ''
-        });
-        setAgreeToTerms(false);
-        setSubmitting(false);
-        
-        // Hide the form after successful submission
-        setTimeout(() => {
-          setShowForm(false);
-          setMessage({ type: '', text: '' });
-        }, 3000);
-      } else {
-        setMessage({ 
-          type: 'error', 
-          text: data.error || 'Failed to submit story. Please try again.' 
-        });
-        setSubmitting(false);
+      while (retries >= 0) {
+        try {
+          const response = await fetch('http://localhost:3004/api/submit-story', {
+            method: 'POST',
+            headers: { 
+              'Content-Type': 'application/json',
+              // Add mobile-specific headers
+              'Accept': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify(formData),
+            signal: controller.signal
+          });
+          
+          clearTimeout(timeoutId);
+          
+          const data = await response.json();
+          
+          if (response.ok) {
+            setMessage({ 
+              type: 'success', 
+              text: 'Your story has been submitted to the admin for review!' 
+            });
+            setFormData({
+              title: '',
+              author: visitorName || '',
+              email: '', // Reset email field
+              dedication: '',
+              content: '',
+              category: ''
+            });
+            setAgreeToTerms(false);
+            setSubmitting(false);
+            
+            // Hide the form after successful submission
+            setTimeout(() => {
+              setShowForm(false);
+              setMessage({ type: '', text: '' });
+            }, 3000);
+            return; // Success, exit the function
+          } else {
+            throw new Error(data.error || 'Server responded with an error');
+          }
+        } catch (error) {
+          lastError = error;
+          if (retries > 0 && (error.name === 'TypeError' || error.name === 'AbortError')) {
+            // Wait before retrying (exponential backoff)
+            await new Promise(resolve => setTimeout(resolve, (4 - retries) * 1000));
+            retries--;
+            continue;
+          } else {
+            throw error; // Re-throw if no more retries or different error type
+          }
+        }
       }
+      
+      // If we get here, all retries failed
+      throw lastError;
+      
     } catch (error) {
       console.error('Story submission error:', error);
       
-      // Handle different types of errors
+      // Handle different types of errors with more detail
       let errorMessage = 'Failed to submit story. Please try again.';
       
       if (error.name === 'AbortError') {
         errorMessage = 'Request timed out. Please check your connection and try again.';
+      } else if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        errorMessage = 'Network error. Please check your internet connection and try again.';
       } else if (error.message) {
         errorMessage = `Error: ${error.message}`;
       }
+      
+      // Add more detailed logging
+      console.error('Full error details:', {
+        name: error.name,
+        message: error.message,
+        stack: error.stack
+      });
       
       setMessage({ 
         type: 'error', 
