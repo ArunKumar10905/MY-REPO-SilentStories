@@ -51,7 +51,7 @@ function SubmitStoryButton({ visitorName }) {
     try {
       // Add timeout for mobile browsers
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout for mobile
+      const timeoutId = setTimeout(() => controller.abort(), 20000); // 20 second timeout for mobile
       
       // Retry logic for mobile network resilience
       let retries = 3;
@@ -59,17 +59,32 @@ function SubmitStoryButton({ visitorName }) {
       
       while (retries >= 0) {
         try {
-          const response = await fetch('http://localhost:3004/api/submit-story', {
-            method: 'POST',
-            headers: { 
-              'Content-Type': 'application/json',
-              // Add mobile-specific headers
-              'Accept': 'application/json',
-              'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: JSON.stringify(formData),
-            signal: controller.signal
-          });
+          // Try fetch first
+          let response;
+          try {
+            response = await fetch('http://localhost:3004/api/submit-story', {
+              method: 'POST',
+              headers: { 
+                'Content-Type': 'application/json',
+                // Add mobile-specific headers
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+              },
+              body: JSON.stringify(formData),
+              signal: controller.signal
+            });
+          } catch (fetchError) {
+            // If fetch fails, try a more permissive approach for mobile
+            console.log('Primary fetch failed, trying alternative approach for mobile');
+            response = await fetch('http://localhost:3004/api/submit-story', {
+              method: 'POST',
+              headers: { 
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(formData)
+              // No signal to avoid AbortError on some mobile browsers
+            });
+          }
           
           clearTimeout(timeoutId);
           
@@ -104,10 +119,54 @@ function SubmitStoryButton({ visitorName }) {
           lastError = error;
           if (retries > 0 && (error.name === 'TypeError' || error.name === 'AbortError')) {
             // Wait before retrying (exponential backoff)
-            await new Promise(resolve => setTimeout(resolve, (4 - retries) * 1000));
+            await new Promise(resolve => setTimeout(resolve, (4 - retries) * 2000));
             retries--;
             continue;
           } else {
+            // For mobile browser network errors, try one more time with relaxed settings
+            if (error.name === 'TypeError' && error.message.includes('fetch') && retries === 0) {
+              try {
+                console.log('Trying final relaxed approach for mobile browser');
+                const relaxedResponse = await fetch('http://localhost:3004/api/submit-story', {
+                  method: 'POST',
+                  headers: { 
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(formData)
+                });
+                
+                const data = await relaxedResponse.json();
+                
+                if (relaxedResponse.ok) {
+                  setMessage({ 
+                    type: 'success', 
+                    text: 'Your story has been submitted to the admin for review!' 
+                  });
+                  setFormData({
+                    title: '',
+                    author: visitorName || '',
+                    email: '', // Reset email field
+                    dedication: '',
+                    content: '',
+                    category: ''
+                  });
+                  setAgreeToTerms(false);
+                  setSubmitting(false);
+                  
+                  // Hide the form after successful submission
+                  setTimeout(() => {
+                    setShowForm(false);
+                    setMessage({ type: '', text: '' });
+                  }, 3000);
+                  return; // Success, exit the function
+                } else {
+                  throw new Error(data.error || 'Server responded with an error');
+                }
+              } catch (relaxedError) {
+                // If even the relaxed approach fails, re-throw the original error
+                throw error;
+              }
+            }
             throw error; // Re-throw if no more retries or different error type
           }
         }
@@ -123,9 +182,9 @@ function SubmitStoryButton({ visitorName }) {
       let errorMessage = 'Failed to submit story. Please try again.';
       
       if (error.name === 'AbortError') {
-        errorMessage = 'Request timed out. Please check your connection and try again.';
+        errorMessage = 'Request timed out. This might be due to a slow connection. Please try again.';
       } else if (error.name === 'TypeError' && error.message.includes('fetch')) {
-        errorMessage = 'Network error. Please check your internet connection and try again.';
+        errorMessage = 'Network error. This is common on mobile browsers. Please try again or refresh the page.';
       } else if (error.message) {
         errorMessage = `Error: ${error.message}`;
       }

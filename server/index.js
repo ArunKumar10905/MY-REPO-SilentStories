@@ -41,11 +41,14 @@ let visitor_sessions = [];
 let submitted_stories = [];
 
 // Middleware
+// Enhanced CORS configuration for mobile browser compatibility
 app.use(cors({
-  origin: '*', // Allow all origins for mobile compatibility
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
+  origin: true, // Reflect the request origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Include OPTIONS
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  credentials: false, // Disable credentials for better mobile compatibility
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 }));
 app.use(express.json());
 app.use(session({
