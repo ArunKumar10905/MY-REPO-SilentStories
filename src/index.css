@@ -210,6 +210,25 @@
     font-size: 0.875rem;
   }
   
+  /* Admin dashboard mobile improvements */
+  .admin-dashboard-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .admin-dashboard-actions {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Table mobile improvements */
+  .responsive-table {
+    font-size: 0.875rem;
+  }
+  
+  .responsive-table th,
+  .responsive-table td {
+    padding: 0.5rem !important;
+  }
+  
   @media (max-width: 480px) {
     .header-admin-button {
       padding: 0.5rem 0.75rem;
@@ -222,6 +241,11 @@
     
     .header-admin-button svg {
       margin-right: 0;
+    }
+    
+    /* Further compress admin dashboard on small screens */
+    .admin-dashboard-stats {
+      grid-template-columns: 1fr 1fr !important;
     }
   }
 }

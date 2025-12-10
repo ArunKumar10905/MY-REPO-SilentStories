@@ -24,7 +24,7 @@ function StoriesTable({ stories, onDelete }) {
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full">
+      <table className="w-full responsive-table">
         <thead>
           <tr className="border-b border-secondary-200 dark:border-secondary-700">
             <th className="text-left py-3 px-4 text-secondary-700 dark:text-secondary-300">

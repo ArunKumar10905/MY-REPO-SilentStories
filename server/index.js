@@ -23,11 +23,11 @@ let stories = [
     content: '<h2>The Coffee Shop at Dawn</h2><p>The first rays of sunlight filtered through the window of the small coffee shop on the corner of Fifth and Main. Sarah had been coming here every morning for the past three years, always ordering the same thing: a medium latte with an extra shot.</p><p>But today was different. Today, she noticed something she had never seen before...</p><p>The barista, whose name tag read "Michael," had been watching her with a curious expression. When their eyes met, he smiled and said something that would change everything.</p><p>"I\'ve been wanting to tell you something for a long time," he began, his voice barely above a whisper. "Every morning, I make your coffee with a little extra care. Not because it\'s my job, but because your smile when you take that first sip makes my entire day worthwhile."</p><p>Sarah felt her cheeks flush. In three years of routine, she had never truly seen him. But now, in this moment, everything was different.</p><p>"Would you like to stay for a while?" he asked, gesturing to a small table by the window. "I\'d love to hear your story."</p><p>And so, over coffee and conversation, two strangers became something more. Sometimes, the most beautiful stories begin in the most ordinary places.</p>',
     category: 'Real life',
     tags: 'romance, coffee, morning, connection',
-    publish_date: new Date().toISOString().split('T')[0],
+    publish_date: new Date().toISOString(),
     views: 0,
     likes: 0, // Added likes field
-    created_at: new Date(),
-    updated_at: new Date(),
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
     comments_count: 0
   }
 ];
