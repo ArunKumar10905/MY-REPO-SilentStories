@@ -143,7 +143,7 @@ function AdminLogin({ setIsAdmin }) {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6 admin-login-form">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Email Address
@@ -186,7 +186,7 @@ function AdminLogin({ setIsAdmin }) {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center password-toggle"
                   disabled={firebaseStatus !== 'ok'}
                 >
                   {showPassword ? (

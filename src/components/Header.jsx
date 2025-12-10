@@ -36,7 +36,7 @@ function Header({ visitorName, onNameChange, darkMode, toggleDarkMode, isAdmin, 
             {/* Admin Dashboard button - visible to everyone */}
             <Link 
               to="/admin/dashboard" 
-              className="flex items-center space-x-1 px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
+              className="flex items-center space-x-1 px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors header-admin-button"
             >
               <LayoutDashboard className="w-5 h-5" />
               <span>Admin Dashboard</span>

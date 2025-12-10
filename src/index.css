@@ -157,7 +157,7 @@
   }
   
   /* Adjust form elements for better mobile experience */
-  input[type="text"], input[type="email"], input[type="date"], textarea, select {
+  input[type="text"], input[type="email"], input[type="date"], input[type="password"], textarea, select {
     font-size: 16px; /* Prevent zoom on iOS Safari */
     padding: 0.75rem;
     min-height: 44px;
@@ -182,5 +182,46 @@
     margin: 1rem;
     max-height: calc(100vh - 2rem);
     overflow-y: auto;
+  }
+  
+  /* Admin login specific mobile improvements */
+  .admin-login-form {
+    padding: 1rem;
+  }
+  
+  .admin-login-form .input-field {
+    padding-left: 2.5rem; /* Account for icon */
+  }
+  
+  .admin-login-form button[type="submit"] {
+    min-height: 44px;
+    width: 100%;
+  }
+  
+  /* Adjust password visibility toggle */
+  .password-toggle {
+    padding: 0.75rem;
+  }
+  
+  /* Header admin button mobile improvements */
+  .header-admin-button {
+    min-height: 44px;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+  
+  @media (max-width: 480px) {
+    .header-admin-button {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+    }
+    
+    .header-admin-button span {
+      display: none;
+    }
+    
+    .header-admin-button svg {
+      margin-right: 0;
+    }
   }
 }
