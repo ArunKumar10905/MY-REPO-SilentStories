@@ -13,7 +13,19 @@ function RealTimeNotifications({ onStoryUpdate }) {
     // Set up polling for real-time updates
     const interval = setInterval(fetchRealTimeEvents, 5000);
     
-    return () => clearInterval(interval);
+    // Also set up visibility change detection for mobile browsers
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        fetchRealTimeEvents(); // Refresh when tab becomes visible
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   const fetchRealTimeEvents = async () => {

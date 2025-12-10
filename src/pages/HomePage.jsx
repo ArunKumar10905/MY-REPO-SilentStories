@@ -14,9 +14,22 @@ function HomePage({ visitorName }) {
     fetchStories();
     
     // Set up polling for real-time updates
-    const interval = setInterval(fetchStories, 10000); // Refresh every 10 seconds
+    // More frequent polling for better mobile experience
+    const interval = setInterval(fetchStories, 5000); // Refresh every 5 seconds
     
-    return () => clearInterval(interval);
+    // Also set up visibility change detection for mobile browsers
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        fetchStories(); // Refresh when tab becomes visible
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   const fetchStories = async () => {

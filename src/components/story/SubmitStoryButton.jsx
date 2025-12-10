@@ -77,9 +77,10 @@ function SubmitStoryButton({ visitorName }) {
         setSubmitting(false);
       }
     } catch (error) {
+      console.error('Story submission error:', error);
       setMessage({ 
         type: 'error', 
-        text: 'Failed to submit story. Please try again.' 
+        text: `Failed to submit story. Error: ${error.message || 'Please try again.'}`
       });
       setSubmitting(false);
     }

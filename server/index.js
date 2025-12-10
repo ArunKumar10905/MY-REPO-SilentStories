@@ -41,7 +41,12 @@ let visitor_sessions = [];
 let submitted_stories = [];
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: '*', // Allow all origins for mobile compatibility
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
 app.use(express.json());
 app.use(session({
   secret: process.env.SESSION_SECRET || 'your-secret-key-change-in-production',
