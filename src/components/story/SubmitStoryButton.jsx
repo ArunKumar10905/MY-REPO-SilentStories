@@ -36,15 +36,36 @@ function SubmitStoryButton({ visitorName }) {
       return;
     }
     
+    // Validate required fields
+    if (!formData.title.trim() || !formData.content.trim()) {
+      setMessage({ 
+        type: 'error', 
+        text: 'Please fill in all required fields (Title and Story Content).' 
+      });
+      return;
+    }
+    
     setSubmitting(true);
     setMessage({ type: '', text: '' });
 
     try {
+      // Add timeout for mobile browsers
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      
       const response = await fetch('http://localhost:3004/api/submit-story', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        headers: { 
+          'Content-Type': 'application/json',
+          // Add mobile-specific headers
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify(formData),
+        signal: controller.signal
       });
+      
+      clearTimeout(timeoutId);
 
       const data = await response.json();
 
@@ -78,9 +99,19 @@ function SubmitStoryButton({ visitorName }) {
       }
     } catch (error) {
       console.error('Story submission error:', error);
+      
+      // Handle different types of errors
+      let errorMessage = 'Failed to submit story. Please try again.';
+      
+      if (error.name === 'AbortError') {
+        errorMessage = 'Request timed out. Please check your connection and try again.';
+      } else if (error.message) {
+        errorMessage = `Error: ${error.message}`;
+      }
+      
       setMessage({ 
         type: 'error', 
-        text: `Failed to submit story. Error: ${error.message || 'Please try again.'}`
+        text: errorMessage
       });
       setSubmitting(false);
     }
@@ -247,7 +278,7 @@ function SubmitStoryButton({ visitorName }) {
               </div>
             </div>
 
-            <div className="flex space-x-3">
+            <div className="flex space-x-3 mobile-form-submit">
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}

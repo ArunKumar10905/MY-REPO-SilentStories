@@ -161,6 +161,10 @@
     font-size: 16px; /* Prevent zoom on iOS Safari */
     padding: 0.75rem;
     min-height: 44px;
+    /* Add mobile-specific attributes */
+    autocomplete: "off";
+    autocapitalize: "sentences";
+    spellcheck: "true";
   }
   
   /* Adjust React Quill editor for mobile */
@@ -227,6 +231,16 @@
   .responsive-table th,
   .responsive-table td {
     padding: 0.5rem !important;
+  }
+  
+  /* Mobile form submission improvements */
+  .mobile-form-submit {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    padding: 1rem 0;
+    border-top: 1px solid #e5e7eb;
+    z-index: 10;
   }
   
   @media (max-width: 480px) {
