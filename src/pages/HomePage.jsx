@@ -97,9 +97,7 @@ function HomePage({ visitorName }) {
       <RealTimeNotifications onStoryUpdate={fetchStories} />
 
       {/* Submit Story Button */}
-      {visitorName && (
-        <SubmitStoryButton visitorName={visitorName} />
-      )}
+      <SubmitStoryButton visitorName={visitorName} />
 
       {loading ? (
         <div className="flex justify-center items-center h-64">

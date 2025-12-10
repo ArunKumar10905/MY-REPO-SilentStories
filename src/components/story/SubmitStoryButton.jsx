@@ -27,6 +27,15 @@ function SubmitStoryButton({ visitorName }) {
       return;
     }
     
+    // Validate that the visitor has entered their name
+    if (!formData.author.trim()) {
+      setMessage({ 
+        type: 'error', 
+        text: 'Please enter your name before submitting your story.' 
+      });
+      return;
+    }
+    
     setSubmitting(true);
     setMessage({ type: '', text: '' });
 
