@@ -174,7 +174,7 @@ function SubmittedStories() {
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={() => handleSaveEdit(story.id)}
-                          className="flex items-center px-3 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                          className="flex items-center px-3 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors w-full mb-2"
                         >
                           <Save className="w-4 h-4 mr-1" />
                           <span>Save</span>
@@ -183,7 +183,7 @@ function SubmittedStories() {
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={handleCancelEdit}
-                          className="flex items-center px-3 py-1 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
+                          className="flex items-center px-3 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors w-full"
                         >
                           <CloseIcon className="w-4 h-4 mr-1" />
                           <span>Cancel</span>
@@ -191,7 +191,7 @@ function SubmittedStories() {
                       </div>
                     </div>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                           Title

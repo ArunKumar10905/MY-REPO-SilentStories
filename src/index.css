@@ -126,4 +126,61 @@
   .story-card {
     margin-bottom: 1rem;
   }
+  
+  /* Adjust highlighted text for mobile */
+  .highlighted-text {
+    padding: 1rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    font-size: 1rem;
+  }
+  
+  /* Adjust main headings for mobile */
+  h1 {
+    font-size: 2.5rem;
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+  }
+  
+  /* Improve form accessibility on mobile */
+  form {
+    width: 100%;
+  }
+  
+  /* Ensure form buttons are accessible on mobile */
+  .btn-primary, .btn-secondary {
+    min-height: 44px;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Adjust form elements for better mobile experience */
+  input[type="text"], input[type="email"], input[type="date"], textarea, select {
+    font-size: 16px; /* Prevent zoom on iOS Safari */
+    padding: 0.75rem;
+    min-height: 44px;
+  }
+  
+  /* Adjust React Quill editor for mobile */
+  .ql-toolbar {
+    overflow-x: auto;
+  }
+  
+  .ql-container {
+    min-height: 200px;
+  }
+  
+  /* Adjust story submission form */
+  .story-form {
+    padding: 1rem;
+  }
+  
+  /* Ensure modal/dialogs work on mobile */
+  .modal-content {
+    margin: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+  }
 }
